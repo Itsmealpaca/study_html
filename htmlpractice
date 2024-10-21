@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Simple Homepage</title>
+    <style>
+        /* 기본 설정 */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        /* 헤더 스타일 */
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .navbar {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #0056b3;
+        }
+
+        /* 메인 콘텐츠 스타일 */
+        main {
+            padding: 20px;
+        }
+
+        .intro, .services, .happy, .lottery {
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .intro h2, .services h2, .happy h2, .lottery h2 {
+            color: #007bff;
+        }
+
+        /* 이미지 스타일 (서비스 섹션 안에 있는 경우) */
+        .services img {
+            display: block;
+            max-width: 90%;
+            height: auto;
+            margin: 15px auto;
+            border-radius: 10px;
+        }
+
+        /* 버튼 스타일 */
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 모달 창 스타일 */
+        .modal, .lottery-modal {
+            display: none; /* 기본적으로 숨김 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        /* 모달 오버레이 스타일 */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* 푸터 스타일 */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header>
+        <nav>
+            <ul class="navbar">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">portfolio</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <h1>안녕하세요. <br>알파카의 홈페이지입니다</h1>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main>
+        <section class="intro">
+            <h2>알파카란</h2>
+            <p>낙타과에 속하는 포유류. 주요 서식지는 에콰도르, 페루 남부, 볼리비아, 칠레 등 안데스산맥을 포함한 고산지대이다.
+                비쿠냐를 가축화하여 생겨난 종으로 추측된다.
+                주로 털을 얻기 위해 가축으로 키우며, 알파카의 털과 면을 혼합해서 알파카라는 이름의 직물을 만든다. 
+                </p>
+        </section>
+
+        <section class="services">
+            <h2>알파카의 이미지</h2>
+            <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSK9f4vSyjXO88NA6jTUax6frZMUk35pAiVbFEkuW1JKQGtNTNI" alt="Example Image">
+            <p>라마와는 다릅니다.</p>
+        </section>
+
+        <!-- 새로운 섹션: 행복해지는 버튼 -->
+        <section class="happy">
+            <h2>행복해지는 버튼</h2>
+            <button id="happyButton">행복해지기</button>
+            <p>행복해질 가능성: <span id="happinessCounter">0.00%</span></p>
+        </section>
+
+        <!-- 새로운 섹션: 로또 당첨되는 법 -->
+        <section class="lottery">
+            <h2>로또 당첨되는 법 (강남 땅부자들의 비밀)</h2>
+            <button id="lotteryButton">알려줘!</button>
+        </section>
+    </main>
+
+<!-- 모달과 오버레이 -->
+<div class="overlay" id="modalOverlay"></div>
+<div class="modal lottery-modal" id="lotteryModal">
+    <h3>천기누설</h3>
+    <p>꾸준하게 많이 구매할 것</p>
+    <button id="closeLotteryModal">닫기</button>
+</div>
+
+
+    <!-- 푸터 -->
+    <footer>
+        <p>&copy; 2024 Itsmealpaca Homepage. All rights reserved.</p>
+    </footer>
+
+
+
+
+    <script>
+        // 행복해지는 버튼 카운터 기능
+        const happyButton = document.getElementById('happyButton');
+        const happinessCounter = document.getElementById('happinessCounter');
+        let happinessValue = 0.00;
+
+        happyButton.addEventListener('click', () => {
+            happinessValue += 0.01;
+            happinessCounter.textContent = happinessValue.toFixed(2) + '%';
+        });
+
+        // 로또 모달 기능
+        const lotteryButton = document.getElementById('lotteryButton');
+        const lotteryModal = document.getElementById('lotteryModal');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const closeLotteryModal = document.getElementById('closeLotteryModal');
+
+        lotteryButton.addEventListener('click', () => {
+            lotteryModal.style.display = 'block';
+            modalOverlay.style.display = 'block';
+        });
+
+        closeLotteryModal.addEventListener('click', () => {
+            lotteryModal.style.display = 'none';
+            modalOverlay.style.display = 'none';
+        });
+
+        modalOverlay.addEventListener('click', () => {
+            lotteryModal.style.display = 'none';
+            modalOverlay.style.display = 'none';
+        });
+    </script>
+
+
+</body>
+</html>
